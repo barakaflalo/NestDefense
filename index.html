@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#14301c">
+<meta name="description" content="מגיני הקן — משחק הגנה בתלת־ממד מבית AppNest">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<title>מגיני הקן</title>
+<style>
+:root{--bg:#14301c;--card:rgba(20,34,24,.86);--line:rgba(255,255,255,.16);--acc:#ffd34a;--on-acc:#2a1d00;--txt:#fff7e6}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--txt);font:16px/1.35 system-ui,-apple-system,"Segoe UI",Arial,sans-serif;user-select:none;-webkit-user-select:none;overscroll-behavior:none}
+button{font:inherit;color:inherit;cursor:pointer}
+.sc{position:fixed;inset:0;display:none;overflow:auto}.sc.on{display:block}
+#home,#levels,#settings,#about{background:radial-gradient(ellipse at 50% 30%,#3f7a3a 0%,#1d4426 55%,#10261a 100%)}
+.hero{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;text-align:center}
+.logo{font-size:84px;filter:drop-shadow(0 6px 16px rgba(0,0,0,.5));animation:bob 2.4s ease-in-out infinite}@keyframes bob{50%{transform:translateY(-8px)}}
+.hero h1{margin:0;font-size:46px;color:var(--acc);text-shadow:0 4px 0 #6b4a00,0 8px 20px rgba(0,0,0,.5)}.hero p{margin:0 0 8px;opacity:.85}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:16px;padding:12px 22px;font-weight:800;font-size:17px;min-height:50px;min-width:150px}
+.btn.pri{background:linear-gradient(#ffe27a,#f2b62a);color:var(--on-acc);border-color:#b98a12;box-shadow:0 4px 0 #9a6f00}.btn.big{font-size:24px;min-width:240px;min-height:64px}.btn.sm{min-width:0;min-height:42px;padding:8px 14px;font-size:15px}
+.top{display:flex;align-items:center;gap:12px;padding:12px 16px}.top h2{margin:0;font-size:22px}
+.worlds{display:flex;gap:14px;padding:0 16px 20px;flex-wrap:wrap;justify-content:center}
+.world{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:10px 14px;flex:1 1 260px;max-width:420px}.world h3{margin:2px 0 10px;color:var(--acc)}
+.lvls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.lvl{position:relative;border:1px solid var(--line);border-radius:14px;background:linear-gradient(#3d6f3a,#2a5229);min-height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900}
+.lvl b{font-size:22px}.lvl span{color:var(--acc);font-size:13px;letter-spacing:1px}.lvl.lock{opacity:.45;background:#2a3a2c}.lvl i{position:absolute;top:4px;inset-inline-end:6px;font-style:normal}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 18px;margin:0 16px 16px;max-width:620px}.card label{display:block;margin:10px 0 6px;font-weight:800}.dim{opacity:.7}
+.seg{display:flex;gap:6px;flex-wrap:wrap}.seg button{border:1px solid var(--line);background:rgba(255,255,255,.06);border-radius:12px;padding:10px 16px;font-weight:700}.seg button.on{background:var(--acc);color:var(--on-acc)}
+#game{overflow:hidden;background:#000}.stage{position:absolute;inset:0;touch-action:none}
+.hud{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:flex-start;padding:8px 10px;pointer-events:none;padding-top:max(8px,env(safe-area-inset-top))}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{background:rgba(10,20,12,.62);border:1px solid var(--line);border-radius:14px;padding:6px 12px;font-weight:800;font-size:17px;backdrop-filter:blur(4px)}.chip b{color:var(--acc)}
+.ctrls{display:flex;gap:8px;pointer-events:auto}
+.rb{width:52px;height:52px;border-radius:50%;border:2px solid rgba(255,255,255,.35);background:rgba(10,20,12,.66);font-size:22px;font-weight:900;display:grid;place-items:center;backdrop-filter:blur(4px)}.rb:disabled{opacity:.35}
+.wavebtn{position:absolute;bottom:14px;inset-inline-end:14px;border:0;border-radius:18px;padding:12px 20px;font-weight:900;font-size:19px;background:linear-gradient(#ffe27a,#f2b62a);color:var(--on-acc);box-shadow:0 4px 0 #9a6f00,0 6px 18px rgba(0,0,0,.4);min-height:56px}
+.wavebtn.pulse{animation:pl 1s ease-in-out infinite}@keyframes pl{50%{transform:scale(1.08)}}
+.pots{position:absolute;bottom:14px;inset-inline-start:14px;display:flex;gap:8px}
+.menu{position:absolute;z-index:5;background:rgba(18,30,20,.94);border:1px solid rgba(255,255,255,.22);border-radius:18px;padding:10px;box-shadow:0 10px 30px rgba(0,0,0,.5);max-width:min(470px,calc(100vw - 16px))}
+.grid{display:grid;grid-template-columns:repeat(6,64px);gap:6px}
+.tbtn{width:64px;height:74px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.07);padding:2px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:13px}
+.tbtn img{width:50px;height:50px;pointer-events:none}.tbtn .emo{font-size:30px;line-height:50px}.tbtn.on{border:2px solid var(--acc);background:rgba(255,211,74,.22)}.tbtn.poor{opacity:.6}.tbtn.lock{opacity:.4;filter:grayscale(1)}
+.mh{display:flex;align-items:center;gap:10px;padding:4px 2px}.mh img{width:56px;height:56px}.mh small{display:block;opacity:.8;font-size:13px}.mh.small{margin-top:8px;justify-content:space-between}.mh .emo{font-size:36px}
+.mrow{display:flex;gap:8px;margin-top:8px}.mbtn{border:1px solid var(--line);background:rgba(255,255,255,.08);border-radius:14px;padding:10px 14px;font-weight:800;min-height:52px;flex:1;white-space:nowrap}.mbtn.pri{background:linear-gradient(#ffe27a,#f2b62a);color:var(--on-acc);border:0}.mbtn:disabled{opacity:.45}.mbtn.x{flex:0 0 52px}
+.loading{position:absolute;inset:0;display:grid;place-items:center;background:rgba(10,20,12,.75);font-size:26px;font-weight:900;color:var(--acc)}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:grid;place-items:center;z-index:20}.ovc{background:#1b3222;border:1px solid var(--line);border-radius:22px;padding:20px 26px;display:flex;flex-direction:column;gap:10px;align-items:center;min-width:280px;text-align:center}.ovc h2{margin:0;color:var(--acc);font-size:30px}.stars{font-size:40px;color:var(--acc);letter-spacing:4px}
+.toast{position:fixed;top:64px;left:50%;transform:translateX(-50%);background:rgba(10,20,12,.92);border:1px solid var(--acc);color:#fff;padding:10px 18px;border-radius:14px;z-index:30;font-weight:700;max-width:90vw;text-align:center}
+#rot{display:none}
+@media (orientation:portrait) and (pointer:coarse){#rot{display:grid;position:fixed;inset:0;z-index:50;place-items:center;background:#10261a;font-size:24px;font-weight:900;text-align:center;padding:30px}}
+@media (max-height:420px){.grid{grid-template-columns:repeat(6,56px)}.tbtn{width:56px;height:64px}.tbtn img{width:44px;height:44px}.rb{width:46px;height:46px}.chip{font-size:15px;padding:4px 10px}}
+</style>
+</head>
+<body>
+<div id="home" class="sc"></div><div id="levels" class="sc"></div><div id="settings" class="sc"></div><div id="about" class="sc"></div><div id="game" class="sc"></div>
+<div id="rot">📱↻<br>סובבו את הטלפון לרוחב<br><small style="opacity:.7">Rotate your phone</small></div>
+<script src="app.js"></script>
+</body>
+</html>

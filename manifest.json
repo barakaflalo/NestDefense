@@ -1,0 +1,36 @@
+{
+  "name": "מגיני הקן · NestDefense",
+  "short_name": "מגיני הקן",
+  "description": "משחק הגנה בתלת־ממד מבית AppNest",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#14301c",
+  "theme_color": "#14301c",
+  "lang": "he",
+  "dir": "rtl",
+  "categories": [
+    "games"
+  ],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
